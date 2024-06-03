@@ -1,6 +1,6 @@
-opencv-python 
-transformers 
+opencv-python-headless[ffmpeg]
+transformers>=4.38.1
 accelerate 
 insightface
-diffusers
+diffusers>=0.26.1
 onnxruntime-gpu

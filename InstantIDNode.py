@@ -1,6 +1,8 @@
 import diffusers
 from diffusers.utils import load_image
 from diffusers.models import ControlNetModel
+
+import execution_context
 from .style_template import styles
 
 import os
@@ -132,11 +134,14 @@ class IDBaseModelLoader_local_Node_Zho:
         pass
 
     @classmethod
-    def INPUT_TYPES(cls):
+    def INPUT_TYPES(cls, context: execution_context.ExecutionContext):
         return {
             "required": {
-                "ckpt_name": (folder_paths.get_filename_list("checkpoints"), ),
+                "ckpt_name": (folder_paths.get_filename_list(context, "checkpoints"), ),
                 "controlnet": ("MODEL",)
+            },
+            "hidden": {
+                "context": "EXECUTION_CONTEXT"
             }
         }
 
@@ -145,12 +150,12 @@ class IDBaseModelLoader_local_Node_Zho:
     FUNCTION = "load_model"
     CATEGORY = "📷InstantID"
   
-    def load_model(self, ckpt_name, controlnet):
+    def load_model(self, ckpt_name, controlnet, context: execution_context.ExecutionContext):
         # Code to load the base model
         if not ckpt_name:
             raise ValueError("Please provide the ckpt_name parameter with the name of the checkpoint file.")
 
-        ckpt_path = folder_paths.get_full_path("checkpoints", ckpt_name)
+        ckpt_path = folder_paths.get_full_path(context, "checkpoints", ckpt_name)
             
         if not os.path.exists(ckpt_path):
             raise FileNotFoundError(f"Checkpoint file {ckpt_path} not found.")

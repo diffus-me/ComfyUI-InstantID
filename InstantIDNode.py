@@ -149,7 +149,12 @@ class IDBaseModelLoader_local_Node_Zho:
     RETURN_NAMES = ("pipe",)
     FUNCTION = "load_model"
     CATEGORY = "📷InstantID"
-  
+
+    @classmethod
+    def VALIDATE_INPUTS(cls, ckpt_name, controlnet, context: execution_context.ExecutionContext):
+        context.validate_model("checkpoints", ckpt_name)
+        return True
+
     def load_model(self, ckpt_name, controlnet, context: execution_context.ExecutionContext):
         # Code to load the base model
         if not ckpt_name:
